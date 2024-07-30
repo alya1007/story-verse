@@ -4,9 +4,9 @@ import { FC, MouseEvent } from "react";
 
 type RouteProps = {
 	route: string;
-	label: string;
-	isActive: boolean;
-	onClick: () => void;
+	label: React.ReactNode;
+	isActive?: boolean;
+	onClick?: () => void;
 };
 
 const Route: FC<RouteProps> = ({ route, label, isActive, onClick }) => {
@@ -14,7 +14,7 @@ const Route: FC<RouteProps> = ({ route, label, isActive, onClick }) => {
 		<Link
 			href={route}
 			onClick={onClick}
-			className={clsx(isActive && "text-primary rounded-none bg-transparent")}
+			className={clsx(isActive && "text-white bg-primary")}
 		>
 			{label}
 		</Link>
