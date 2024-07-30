@@ -1,19 +1,52 @@
-import React, { FC } from "react";
+import { cn } from "@/lib/utils";
+import { cva, VariantProps } from "class-variance-authority";
+import { LoaderCircle } from "lucide-react";
+import React, { ButtonHTMLAttributes, FC } from "react";
 
-type ButtonProps = {
-	text: string;
-	onClick: () => void;
-	aria: string;
-};
+export interface ButtonProps
+	extends ButtonHTMLAttributes<HTMLButtonElement>,
+		VariantProps<typeof buttonVariants> {
+	isLoading?: boolean;
+}
 
-const Button: FC<ButtonProps> = ({ text, onClick, aria }) => {
+const buttonVariants = cva(
+	"inline-flex items-center justify-center rounded-md border",
+	{
+		variants: {
+			variant: {
+				default: "border-transparent text-white bg-primary hover:bg-primary/80",
+				ghost:
+					"border-primary border-2 text-primary bg-transparent hover:bg-primary/10",
+			},
+			size: {
+				sm: "px-3 py-1 text-sm",
+				md: "px-4 py-2 text-base",
+				lg: "px-6 py-3 text-lg",
+			},
+		},
+		defaultVariants: {
+			variant: "default",
+			size: "md",
+		},
+	}
+);
+
+const Button: FC<ButtonProps> = ({
+	className,
+	children,
+	variant,
+	isLoading,
+	size,
+	...props
+}) => {
 	return (
 		<button
-			className="bg-primary py-1 px-4 rounded-lg hover:bg-primary/80 duration-300 inline-block text-white"
-			onClick={onClick}
-			aria-label={aria}
+			className={cn(buttonVariants({ variant, size, className }))}
+			disabled={isLoading}
+			{...props}
 		>
-			{text}
+			{isLoading ? <LoaderCircle className="animate-spin" /> : null}
+			{!isLoading && children}
 		</button>
 	);
 };
